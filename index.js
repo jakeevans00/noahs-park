@@ -85,7 +85,7 @@ app.post("/login", async (req, res) => {
 });
 
 // Create New User
-app.get("/signup", (res, req) => {
+app.get("/signup", (req, res) => {
     res.render("signup");
 });
 
