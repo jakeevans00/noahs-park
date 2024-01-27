@@ -13,12 +13,8 @@
       <nav class="mx-auto max-w-7xl items-center justify-between p-1 lg:px-8">
         <div class="flex lg:flex-1">
           <a href="" class="m-1.5 p-1 flex justify-between items-center w-full">
-            <img
-              class="h-8 w-auto"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-              alt=""
-            />
-            <img src="/img/bars.png" alt="" width="25" height="25" />
+            <img class="h-8 w-auto" src="/img/ark.png" alt="" />
+            <img src="/img/bars.svg" alt="" width="25" height="25" />
           </a>
         </div>
       </nav>
@@ -39,6 +35,7 @@
         <div>
           <button
             class="bg-green-600 px-4 py-2 rounded-3xl text-white hover:bg-green-300 hover:text-black"
+            id="sellButton"
           >
             Sell my Spot
           </button>
@@ -48,7 +45,11 @@
         </div>
       </div>
     </div>
+    <script src="/js/core.js"></script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtk_HSN7jr8tjXmrgtU9DNU7lnbVjUALo"></script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtk_HSN7jr8tjXmrgtU9DNU7lnbVjUALo"
+      loading="async"
+    ></script>
   </body>
 </html>

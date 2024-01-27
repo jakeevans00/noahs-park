@@ -1,10 +1,3 @@
-function getCoordinates() {
-  console.log("clicked");
-}
-
-const x = document.getElementById("sellButton");
-x.addEventListener("click", getLocation);
-
 function initMap() {
   const map = new google.maps.Map(document.getElementById("map"), {
     zoom: 8,
@@ -19,8 +12,6 @@ function initMap() {
 }
 
 function geocodeLatLng(geocoder, map, infowindow) {
-  console.log("geocodeLatLng");
-  console.log(geocoder, map);
   const input = document.getElementById("latlng").value;
   const latlngStr = input.split(",", 2);
   const latlng = {
@@ -48,19 +39,18 @@ function geocodeLatLng(geocoder, map, infowindow) {
     .catch((e) => window.alert("Geocoder failed due to: " + e));
 }
 
-// window.initMap = initMap;
+window.initMap = initMap;
+
+const x = document.getElementById("getLocation");
 
 function getLocation() {
-  console.log("clicked in location");
   if (navigator.geolocation) {
-    console.log("Geolocation is supported by this browser.");
     navigator.geolocation.getCurrentPosition(showPosition);
   } else {
-    console.log("Geolocation is not supported by this browser.");
+    x.innerHTML = "Geolocation is not supported by this browser.";
   }
 }
 
 function showPosition(position) {
-  console.log("show position");
-  geocodeLatLng(position.coords.latitude, position.coords.longitude);
+  x.innerHTML = position.coords.latitude + "," + position.coords.longitude;
 }
