@@ -52,6 +52,28 @@ app.get("/", (req, res) => {
     res.render("index");
 });
 
+// Return all Records in the database
+app.get("/records", (req, res) => {
+    // Pull values from Database
+    knex
+        .select()
+        .from("users")
+        // .where("col1", filterValue) // Use This to filter the results
+        .then(queryResult => {
+            // Pass Results to Dictionary
+            let data = {
+                records: queryResult
+            }
+            console.log(data)
+            //Pass Data to View, Render and Return to User
+            res.render("index")
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({err});
+        });
+});
+
 // Activate Listener
 app.listen(port, () => console.log("Listening Active, Server Operational"));
 console.log("Starting development server at http://localhost:" + port)
