@@ -1,4 +1,4 @@
 git pull
 npm install
 npm run build:css
-pm2 restart appName
+pm2 restart NoahsPark
