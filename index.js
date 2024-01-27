@@ -64,7 +64,7 @@ app.get("/login", (req, res) => {
 
 //Authenticate User
 app.post("/login", async (req, res) => {
-    let inputData = {
+    const inputData = {
         "email": req.body.email,
         "password": req.body.password
     }
@@ -89,20 +89,44 @@ app.get("/signup", (req, res) => {
     res.render("signup");
 });
 
+app.post("/signup", (req, res) => {
+    const inputs = {
+        "email": req.body.email,
+        "password": req.body.password,
+        "firstname": req.body.firstname,
+        "lastname": req.body.lastname,
+        "car_make": req.body.car_make,
+        "car_model": req.body.car_model,
+        "car_color": req.body.car_color,
+        "license_number": req.body.license_number
+    };
+    // Insert new User
+    knex("User")
+        .insert({
+            email: inputs.email,
+            password: inputs.password,
+            firstname: inputs.firstname,
+            lastname: inputs.lastname,
+            car_make: inputs.car_make,
+            car_model: inputs.car_model,
+            car_color: inputs.car_color,
+            license_number: inputs.license_number
+        })
+        .then(result => {
+            res.redirect("/");
+        })
+        .catch(err => {
+            console.log(err);
+            res.redirect("/");
+            // res.status(500).json(err);
+        });
+});
+
 // Activate Listener
 app.listen(port, () => console.log("Listening Active, Server Operational"));
 console.log("Starting development server at http://localhost:" + port)
 
 
-// Functions
-// function setAuthCookie(res, userId) {
-//     // Set the authentication cookie with the user ID
-//     res.cookie(authCookieName, userId, {
-//         maxAge: 86400000, // Cookie expiration time in milliseconds (1 day in this example)
-//         httpOnly: true,   // Cookie accessible only through HTTP(S) requests
-//         // You may want to add other cookie options like secure, sameSite, etc. based on your requirements
-//     });
-// }
 function setAuthCookie(res, userId) {
     res.cookie(authCookieName, userId, {
       secure: true,
