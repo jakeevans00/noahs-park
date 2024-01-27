@@ -35,6 +35,13 @@ const port = ENV_VARIABLES.appPort;
 let express = require('express');
 let app = express();
 
+const cookieParser = require("cookie-parser");
+const bcrypt = require("bcrypt");
+// const { peerProxy } = require("./peerProxy.js");
+const authCookieName = "token";
+app.use(express.json());
+app.use(cookieParser());
+
 // Define Static File Directory
 app.use(express.static("public"))
 
@@ -56,11 +63,42 @@ app.get("/login", (req, res) => {
 });
 
 //Authenticate User
-app.post("/login", (req, res) => {
+app.post("/login", async (req, res) => {
     let inputData = {
         "email": req.body.email,
         "password": req.body.password
     }
+    // Pull User from Database
+    try {
+        const user = await knex("User").where("email", inputData.email).first();
+        if (inputData.password === user.password) {
+            res.redirect("/")
+            console.log("nice")
+        } else {
+            res.redirect("/")
+            console.log("darn")
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+      }
+    // knex
+    //     .select()
+    //     .from("User")
+    //     // .where("col1", filterValue) // Use This to filter the results
+    //     .then(queryResult => {
+    //         // Pass Results to Dictionary
+    //         let data = {
+    //             records: queryResult
+    //         }
+    //         console.log(data)
+    //         //Pass Data to View, Render and Return to User
+    //         res.redirect("/")
+    //     })
+    //     .catch(err => {
+    //         console.log(err);
+    //         res.status(500).json({err});
+    //     });
     
 })
 
