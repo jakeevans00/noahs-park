@@ -36,7 +36,7 @@ let express = require('express');
 let app = express();
 
 // Define Static File Directory
-app.use(express.static("content"))
+app.use(express.static("public"))
 
 // Setup Form Access
 app.use(express.urlencoded({extended: true}));
