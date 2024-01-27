@@ -82,7 +82,12 @@ app.post("/login", async (req, res) => {
         console.error(error);
         res.redirect("/login");
       }
-})
+});
+
+// Create New User
+app.get("/signup", (res, req) => {
+    res.render("signup");
+});
 
 // Activate Listener
 app.listen(port, () => console.log("Listening Active, Server Operational"));
