@@ -50,29 +50,22 @@ console.log("Server Started");
 // Root Directory
 app.get("/", (req, res) => {
     res.render("index");
+})
+app.get("/login", (req, res) => {
+    res.render("login");
 });
 
-// Return all Records in the database
-app.get("/records", (req, res) => {
-    // Pull values from Database
-    knex
-        .select()
-        .from("users")
-        // .where("col1", filterValue) // Use This to filter the results
-        .then(queryResult => {
-            // Pass Results to Dictionary
-            let data = {
-                records: queryResult
-            }
-            console.log(data)
-            //Pass Data to View, Render and Return to User
-            res.render("index")
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({err});
-        });
-});
+//Authenticate User
+app.post("/login", (req, res) => {
+    let inputData = {
+        "email": req.body.email,
+        "password": req.body.password
+    }
+    
+})
+
+// Render Login Page
+app.get("/login")
 
 // Activate Listener
 app.listen(port, () => console.log("Listening Active, Server Operational"));
