@@ -55,7 +55,7 @@ console.log("Server Started");
 
 // Define Routes:
 // Root Directory
-app.get("/", (req, res) => {
+app.get("/", checkAuth, (req, res) => {
     res.render("index");
 })
 app.get("/login", (req, res) => {
@@ -72,39 +72,48 @@ app.post("/login", async (req, res) => {
     try {
         const user = await knex("User").where("email", inputData.email).first();
         if (inputData.password === user.password) {
-            res.redirect("/")
-            console.log("nice")
+            setAuthCookie(res, user.userId);
+            console.log(user);
+            res.redirect("/");
         } else {
-            res.redirect("/")
-            console.log("darn")
+            res.redirect("/login");
         }
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Internal server error' });
+        res.redirect("/login");
       }
-    // knex
-    //     .select()
-    //     .from("User")
-    //     // .where("col1", filterValue) // Use This to filter the results
-    //     .then(queryResult => {
-    //         // Pass Results to Dictionary
-    //         let data = {
-    //             records: queryResult
-    //         }
-    //         console.log(data)
-    //         //Pass Data to View, Render and Return to User
-    //         res.redirect("/")
-    //     })
-    //     .catch(err => {
-    //         console.log(err);
-    //         res.status(500).json({err});
-    //     });
-    
 })
-
-// Render Login Page
-app.get("/login")
 
 // Activate Listener
 app.listen(port, () => console.log("Listening Active, Server Operational"));
 console.log("Starting development server at http://localhost:" + port)
+
+
+// Functions
+// function setAuthCookie(res, userId) {
+//     // Set the authentication cookie with the user ID
+//     res.cookie(authCookieName, userId, {
+//         maxAge: 86400000, // Cookie expiration time in milliseconds (1 day in this example)
+//         httpOnly: true,   // Cookie accessible only through HTTP(S) requests
+//         // You may want to add other cookie options like secure, sameSite, etc. based on your requirements
+//     });
+// }
+function setAuthCookie(res, userId) {
+    res.cookie(authCookieName, userId, {
+      secure: true,
+      httpOnly: true,
+      sameSite: "strict",
+    });
+  }
+
+  function checkAuth(req, res, next) {
+    const userId = req.cookies[authCookieName];
+
+    if (userId) {
+        req.userId = userId;
+        next();
+    } else {
+        // Redirect to the login page or perform other actions for unauthenticated users
+        res.redirect("/login");
+    }
+}
