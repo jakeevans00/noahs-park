@@ -7,21 +7,48 @@
     <link rel="stylesheet" href="/build/styles.css" />
     <!-- Other head elements -->
   </head>
-  <body>
+  <body class="bg-transparent">
     <!-- Your content here -->
-    <header class="bg-slate-300">
-      <nav class="mx-auto max-w-7xl items-center justify-between p-4 lg:px-8">
+    <header class="bg-slate-300 bg-transparent">
+      <nav class="mx-auto max-w-7xl items-center justify-between p-1 lg:px-8">
         <div class="flex lg:flex-1">
-          <a href="" class="m-1.5 p-1">
-            <span class="sr-only">Noah's Park</span>
+          <a href="" class="m-1.5 p-1 flex justify-between items-center w-full">
             <img
               class="h-8 w-auto"
               src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
               alt=""
             />
+            <img src="/img/bars.png" alt="" width="25" height="25" />
           </a>
         </div>
       </nav>
     </header>
+    <div class="h-screen">
+      <iframe
+        src="https://storage.googleapis.com/maps-solutions-ucws9fbcq7/commutes/v67r/commutes.html"
+        width="100%"
+        height="60%"
+        style="border: 0"
+        loading="lazy"
+      >
+      </iframe>
+      <div
+        class="rounded-t-lg shadow-lg h-2/5 border-t-2 flex flex-col p-4 gap-2"
+      >
+        <h1 class="font-bold text-xl">Howdy, Johnny</h1>
+        <div>
+          <button
+            class="bg-green-600 px-4 py-2 rounded-3xl text-white hover:bg-green-300 hover:text-black"
+          >
+            Sell my Spot
+          </button>
+          <button class="bg-blue-300 px-4 py-2 rounded-3xl hover:bg-blue-200">
+            Find a Spot
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtk_HSN7jr8tjXmrgtU9DNU7lnbVjUALo"></script>
   </body>
 </html>
