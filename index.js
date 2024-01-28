@@ -84,14 +84,17 @@ app.post("/login", async (req, res) => {
   // Pull User from Database
   try {
     const user = await knex("User").where("email", inputData.email).first();
+    console.log(user)
     if (inputData.password === user.password) {
-      setAuthCookie(res, user.userId);
+      setAuthCookie(res, user.id);
       console.log(user);
       res.redirect("/");
     } else {
+        console.log("auth fail")
       res.redirect("/login");
     }
   } catch (error) {
+    console.log("auth fail")
     console.error(error);
     res.redirect("/login");
   }
