@@ -57,7 +57,18 @@ console.log("Server Started");
 // Define Routes:
 // Root Directory
 app.get("/", checkAuth, (req, res) => {
-    res.render("index");
+    const userId = req.cookies[authCookieName];
+    knex("User")
+        .where("id", userId).first()
+        .then(data => {
+            console.log(data);
+            res.render("index", {data})
+        })
+        .catch(err => {
+            console.log(err);
+            res.redirect("/login");
+            // res.status(500).json(err);
+        });
 })
 app.get("/login", (req, res) => {
     res.render("login");
@@ -147,3 +158,4 @@ function setAuthCookie(res, userId) {
         res.redirect("/login");
     }
 }
+
