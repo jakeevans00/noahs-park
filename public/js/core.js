@@ -91,3 +91,11 @@ function setMarkers(map) {
 }
 
 window.initMap = initMap;
+const protocol = window.location.protocol === "http:" ? "ws" : "wss";
+const socket = new WebSocket(`${protocol}://${window.location.host}`);
+
+socket.onopen = () => {
+  console.log("connected");
+};
+
+function sellSpot() {}
