@@ -12,6 +12,7 @@ const ENV_VARIABLES = {
   dbName: process.env.DATABASE_NAME,
   dbPort: process.env.DB_PORT,
   appPort: parseInt(process.env.PORT),
+  api_key: process.env.API_KEY,
 };
 
 // Define Knex Database Connection
@@ -55,7 +56,20 @@ console.log("Server Started");
 // Define Routes:
 // Root Directory
 app.get("/", checkAuth, (req, res) => {
-  res.render("index");
+  const userId = req.cookies[authCookieName];
+  knex("User")
+    .where("id", userId)
+    .first()
+    .then((data) => {
+      data["API_KEY"] = ENV_VARIABLES.api_key;
+      console.log(data);
+      res.render("index", { data });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.redirect("/login");
+      // res.status(500).json(err);
+    });
 });
 app.get("/login", (req, res) => {
   res.render("login");
