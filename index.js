@@ -12,7 +12,8 @@ const ENV_VARIABLES = {
     dbPassword: process.env.DATABASE_PASSWORD,
     dbName: process.env.DATABASE_NAME,
     dbPort: process.env.DB_PORT,
-    appPort: parseInt(process.env.PORT)
+    appPort: parseInt(process.env.PORT),
+    api_key: process.env.API_KEY
 };
 
 // Define Knex Database Connection
@@ -61,6 +62,7 @@ app.get("/", checkAuth, (req, res) => {
     knex("User")
         .where("id", userId).first()
         .then(data => {
+            data["API_KEY"] = ENV_VARIABLES.api_key;
             console.log(data);
             res.render("index", {data})
         })
