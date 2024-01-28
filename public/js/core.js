@@ -98,4 +98,12 @@ socket.onopen = () => {
   console.log("connected");
 };
 
-function sellSpot() {}
+socket.onmessage = async (event) => {
+  console.log(event.data);
+  const data = await event.data.text();
+};
+
+function sellSpot() {
+  console.log("sellSpot");
+  socket.send(`{}`);
+}
