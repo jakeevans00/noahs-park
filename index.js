@@ -62,7 +62,6 @@ app.get("/", checkAuth, (req, res) => {
     .first()
     .then((data) => {
       data["API_KEY"] = ENV_VARIABLES.api_key;
-      console.log(data);
       res.render("index", { data });
     })
     .catch((err) => {

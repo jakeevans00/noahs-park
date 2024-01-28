@@ -4,7 +4,7 @@ let locations = [
 ];
 
 function initMap() {
-  console.log("initMap");
+  // console.log("initMap");
   const map = new google.maps.Map(document.getElementById("map"), {
     zoom: 8,
     center: { lat: 40.7426777, lng: -111.8653479 },
@@ -19,14 +19,14 @@ function initMap() {
 }
 
 function getLocationAndNavigate(map) {
-  console.log("getLocationAndNavigate");
+  // console.log("getLocationAndNavigate");
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition((position) => {
       const latlng = {
         lat: position.coords.latitude,
         lng: position.coords.longitude,
       };
-      console.log(latlng);
+      // console.log(latlng);
 
       map.setZoom(17);
 
@@ -99,11 +99,83 @@ socket.onopen = () => {
 };
 
 socket.onmessage = async (event) => {
-  console.log(event.data);
+  // console.log(event.data);
   const data = await event.data.text();
 };
 
 function sellSpot() {
-  console.log("sellSpot");
+  // console.log("sellSpot");
   socket.send(`{}`);
 }
+
+
+function getTime() {
+  // Why TF doesnt JS have something built in I hate it here
+  const currentDate = new Date();
+
+  const currentHours = currentDate.getHours();
+  const currentMinutes = currentDate.getMinutes();
+
+  const ampm = currentHours >= 12 ? 'PM' : 'AM';
+  const formattedHours = currentHours % 12 || 12;
+
+  const formattedTime = `${formattedHours}:${currentMinutes} ${ampm}`;
+  console.log(formattedTime)
+  return formattedTime;
+}
+
+// Use this stuff here:
+let openings = []
+// Fix this so it actually is dynamic
+function getCoordinates() {
+  // Simulating the coordinates retrieval
+  const latitude = 37.7749;
+  const longitude = -122.4194;
+
+  // Return an array with latitude and longitude
+  console.log([latitude, longitude]);
+  return [latitude, longitude];
+}
+
+
+function addOpening(id, name, price, wait, lat, long) {
+  const newOpening = {
+    id: id,
+    name: name,
+    price: price,
+    wait: wait,
+    lat: lat,
+    long: long,
+    time: getTime()
+  }
+  openings.push(newOpening)
+}
+
+function postOpening() {
+  const price = parseFloat(document.getElementById("price").value);
+  const wait = parseFloat(document.getElementById("wait").value);
+  const coordinates = getCoordinates();
+
+  addOpening(user.id, user.name, price, wait, coordinates[0], coordinates[1]);
+  displayOpenings();
+}
+
+function displayOpenings() {
+  let displayList = document.getElementById("displayList");
+  displayList.innerHTML = '';
+
+  openings.forEach(function(opening) {
+    // Create a new list item
+    const listItem = document.createElement("li");
+
+    // Set the inner HTML of the list item with the opening details
+    listItem.innerHTML = `${opening.name} is selling a spot! $${opening.price} - ${opening.wait}`;
+
+    // Append the list item to the displayList
+    displayList.appendChild(listItem);
+  });
+}
+
+
+
+displayOpenings()
