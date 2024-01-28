@@ -37,10 +37,11 @@ let app = express();
 
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcrypt");
-// const { peerProxy } = require("./peerProxy.js");
+const { peerLink } = require("./peerLink.js");
 const authCookieName = "token";
 app.use(express.json());
 app.use(cookieParser());
+
 
 // Define Static File Directory
 app.use(express.static("public"))
@@ -123,7 +124,7 @@ app.post("/signup", (req, res) => {
 });
 
 // Activate Listener
-app.listen(port, () => console.log("Listening Active, Server Operational"));
+const httpService = app.listen(port, () => console.log("Listening Active, Server Operational"));
 console.log("Starting development server at http://localhost:" + port)
 
 
