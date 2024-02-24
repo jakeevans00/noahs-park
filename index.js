@@ -33,12 +33,14 @@ const port = ENV_VARIABLES.appPort;
 
 // Define + Configure Express:
 let express = require("express");
-let app = express();
 
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcrypt");
 const { peerLink } = require("./peerLink.js");
 const authCookieName = "token";
+
+let app = express();
+
 app.use(express.json());
 app.use(cookieParser());
 
@@ -56,7 +58,8 @@ console.log("Server Started");
 // Define Routes:
 // Root Directory
 app.get("/", checkAuth, (req, res) => {
-  const userId = req.cookies[authCookieName];
+  const userId = req.cookies.token;
+  console.log(userId);
   knex("User")
     .where("id", userId)
     .first()
@@ -70,30 +73,27 @@ app.get("/", checkAuth, (req, res) => {
       // res.status(500).json(err);
     });
 });
+
 app.get("/login", (req, res) => {
   res.render("login");
 });
 
 //Authenticate User
 app.post("/login", async (req, res) => {
-  const inputData = {
-    email: req.body.email,
-    password: req.body.password,
-  };
   // Pull User from Database
+  console.log("about to tests");
+
   try {
-    const user = await knex("User").where("email", inputData.email).first();
-    console.log(user)
-    if (inputData.password === user.password) {
+    const user = await knex("User").where("email", req.body.email).first();
+    if (req.body.password === user.password) {
       setAuthCookie(res, user.id);
-      console.log(user);
       res.redirect("/");
     } else {
-        console.log("auth fail")
+      console.log("auth fail");
       res.redirect("/login");
     }
   } catch (error) {
-    console.log("auth fail")
+    console.log("auth fail");
     console.error(error);
     res.redirect("/login");
   }
@@ -146,14 +146,15 @@ peerLink(httpService);
 
 function setAuthCookie(res, userId) {
   res.cookie(authCookieName, userId, {
-    secure: true,
-    httpOnly: true,
+    secure: false,
+    httpOnly: false,
     sameSite: "strict",
   });
 }
 
 function checkAuth(req, res, next) {
-  const userId = req.cookies[authCookieName];
+  console.log(req.cookies);
+  const userId = req.cookies.token;
 
   if (userId) {
     req.userId = userId;
